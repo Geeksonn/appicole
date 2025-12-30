@@ -2,27 +2,24 @@
 @import 'uniwind';
 
 @theme {
+    /* Font Families */
+
+    /* Font sizes */
+    --text-base: 18px;
 
     /* Colors */
     --color-background: '#FAFAFA';
     --color-accent-green: '#004235';
-    --color-accent-grey: '#B1B1B1';
     --color-accent-orange: '#E65E44';
     --color-accent-pink: '#EEA4C8';
     --color-accent-yellow: '#F59F00';
 
 
-    /*
-    background: '#FAFAFA',
-                'brass-green': '#004235',
-                'brass-grey': '#B1B1B1',
-                'brass-orange': '#E65E44',
-                'brass-pink': '#EEA4C8',
-                'brass-pill': '#F2F2F2',
-                'brass-yellow': '#F59F00',
-                'brass-beige': '#F5F0E8',
-                separator: '#E9E9E9',
-                inactive: '#E3E3E3',
-                facebook: '#0866ff',
-    */
+    /* TBC */
+    --color-grey: '#B1B1B1';
+    --color-pill: '#F2F2F2';
+    --color-beige: '#F5F0E8';
+    --color-separator: '#E9E9E9';
+    --color-inactive: '#E3E3E3';
+    --color-facebook: '#0866ff';
 }
