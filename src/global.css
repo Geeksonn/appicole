@@ -5,7 +5,22 @@
     /* Font Families */
 
     /* Font sizes */
-    --text-base: 18px;
+    --text-xs: 0.875rem;
+    --text-xs--line-height: calc(1 / 0.875);
+    --text-sm: 1rem;
+    --text-sm--line-height: calc(1.25 / 1);
+    --text-base: 1.125rem;
+    --text-base--line-height: calc(1.5 / 1.125);
+    --text-lg: 1.25rem;
+    --text-lg--line-height: calc(1.75 / 1.25);
+    --text-xl: 1.375rem;
+    --text-xl--line-height: calc(1.75 / 1.375);
+    --text-2xl: 1.625rem;
+    --text-2xl--line-height: calc(2 / 1.625);
+    --text-3xl: 2rem;
+    --text-3xl--line-height: calc(2.25 / 2);
+    --text-4xl: 2.375rem;
+    --text-4xl--line-height: calc(2.5 / 2.375);
 
     /* Colors */
     --color-background: '#FAFAFA';
@@ -13,7 +28,6 @@
     --color-accent-orange: '#E65E44';
     --color-accent-pink: '#EEA4C8';
     --color-accent-yellow: '#F59F00';
-
 
     /* TBC */
     --color-grey: '#B1B1B1';

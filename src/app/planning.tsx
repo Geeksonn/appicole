@@ -1,45 +1,101 @@
-import Header from '@/components/common/header';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { Text, View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import MainScreenContainer from '@/components/common/main-screen-container';
+import { ScrollView, Text, View } from 'react-native';
 
 export default function Planning() {
     return (
-        <SafeAreaProvider>
-            <SafeAreaView className='bg-background'>
-                <Header title='Planning' />
-                <View className='m-4'>
-                    <View className='flex flex-row gap-x-4'>
-                        <Text className='text-base'>18:00</Text>
-                        <Ionicons name='time-outline' size={16} color='#E65E44' />
-                        <View>
-                            <Text className='text-base font-semibold text-accent-green'>Repas</Text>
-                            <Text className='flex-wrap text-base font-light text-grey'>Venez vous régaler avec une bonne bière. Lorem Ipsum sd dss ds sd sd sdd sdsds ssd sd ss </Text>
-                        </View>
+        <MainScreenContainer title={`Et c'est parti !`}>
+            <ScrollView className='flex mx-4 mt-4'>
+                <View className='mb-6 last:mb-0'>
+                    <View className='flex flex-row gap-x-3'>
+                        <Text className='text-base font-semibold'>18:05</Text>
+                        <Text className='text-base font-semibold text-accent-green'>
+                            Repas
+                        </Text>
                     </View>
-
-                    
-                    <View className='flex flex-row gap-x-4'>
-                        <Text className='text-base'>18:00</Text>
-                        <Ionicons name='time-outline' size={16} color='#E65E44' />
-                        <View>
-                            <Text className='text-base font-semibold text-accent-green'>Repas</Text>
-                            <Text className='text-base font-light text-grey'>Venez vous régaler avec une bonne bière.</Text>
-                        </View>
-                    </View>
-
-                    
-                    <View className='flex flex-row gap-x-4'>
-                        <Text className='text-base'>18:00</Text>
-                        <Ionicons name='time-outline' size={16} color='#E65E44' />
-                        <View>
-                            <Text className='text-base font-semibold text-accent-green'>Repas</Text>
-                            <Text className='text-base font-light text-grey'>Venez vous régaler avec une bonne bière. Lorem Ipsum Doloret Sit.</Text>
-                        </View>
-                    </View>
-
+                    <Text className='pl-6 pt-2 text-base font-light text-grey'>
+                        Venez vous régaler avec une bonne bière. Lorem Ipsum sd dss ds sd sd sdd sdsds ssd sd
+                        ss
+                    </Text>
                 </View>
-            </SafeAreaView>
-        </SafeAreaProvider>
+
+                <View className='mb-6 last:mb-0'>
+                    <View className='flex flex-row gap-x-3'>
+                        <Text className='text-base font-semibold'>18:05</Text>
+                        <Text className='text-base font-semibold text-accent-green'>
+                            Repas
+                        </Text>
+                    </View>
+                    <Text className='pl-6 pt-2 text-base font-light text-grey'>
+                        Venez vous régaler avec une bonne bière. Lorem Ipsum sd dss ds sd sd sdd sdsds ssd sd
+                        ss
+                    </Text>
+                </View>
+
+                <View className='mb-6 last:mb-0'>
+                    <View className='flex flex-row gap-x-3'>
+                        <Text className='text-base font-semibold'>18:05</Text>
+                        <Text className='text-base font-semibold text-accent-green'>
+                            Repas
+                        </Text>
+                    </View>
+                    <Text className='pl-6 pt-2 text-base font-light text-grey'>
+                        Venez vous régaler avec une bonne bière. Lorem Ipsum sd dss ds sd sd sdd sdsds ssd sd
+                        ss
+                    </Text>
+                </View>
+
+                <View className='mb-6 last:mb-0'>
+                    <View className='flex flex-row gap-x-3'>
+                        <Text className='text-base font-semibold'>18:05</Text>
+                        <Text className='text-base font-semibold text-accent-green'>
+                            Repas
+                        </Text>
+                    </View>
+                    <Text className='pl-6 pt-2 text-base font-light text-grey'>
+                        Venez vous régaler avec une bonne bière. Lorem Ipsum sd dss ds sd sd sdd sdsds ssd sd
+                        ss
+                    </Text>
+                </View>
+
+                <View className='mb-6 last:mb-0'>
+                    <View className='flex flex-row gap-x-3'>
+                        <Text className='text-base font-semibold'>18:05</Text>
+                        <Text className='text-base font-semibold text-accent-green'>
+                            Repas
+                        </Text>
+                    </View>
+                    <Text className='pl-6 pt-2 text-base font-light text-grey'>
+                        Venez vous régaler avec une bonne bière. Lorem Ipsum sd dss ds sd sd sdd sdsds ssd sd
+                        ss
+                    </Text>
+                </View>
+
+                <View className='mb-6 last:mb-0'>
+                    <View className='flex flex-row gap-x-3'>
+                        <Text className='text-base font-semibold'>18:05</Text>
+                        <Text className='text-base font-semibold text-accent-green'>
+                            Repas
+                        </Text>
+                    </View>
+                    <Text className='pl-6 pt-2 text-base font-light text-grey'>
+                        Venez vous régaler avec une bonne bière. Lorem Ipsum sd dss ds sd sd sdd sdsds ssd sd
+                        ss
+                    </Text>
+                </View>
+
+                <View className='mb-6 last:mb-0'>
+                    <View className='flex flex-row gap-x-3'>
+                        <Text className='text-base font-semibold'>18:05</Text>
+                        <Text className='text-base font-semibold text-accent-green'>
+                            Repas
+                        </Text>
+                    </View>
+                    <Text className='pl-6 pt-2 text-base font-light text-grey'>
+                        Venez vous régaler avec une bonne bière. Lorem Ipsum sd dss ds sd sd sdd sdsds ssd sd
+                        ss
+                    </Text>
+                </View>
+            </ScrollView>
+        </MainScreenContainer>
     );
 }

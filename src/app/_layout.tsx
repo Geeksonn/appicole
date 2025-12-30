@@ -1,10 +1,31 @@
+import React from 'react';
+
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useFonts } from 'expo-font';
 import { Icon, Label, NativeTabs, VectorIcon } from 'expo-router/unstable-native-tabs';
+import * as SplashScreen from 'expo-splash-screen';
 import { DynamicColorIOS } from 'react-native';
 
 import '@/global.css';
 
+SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
+    const [loaded, error] = useFonts({
+        'title': require('@assets/fonts/SchibstedGrotesk-Bold.ttf'),
+        //'title-semibold': require('@assets/fonts/SchibstedGrotesk-SemiBold.ttf'),
+    });
+
+    React.useEffect(() => {
+        if (loaded || error) {
+            SplashScreen.hideAsync();
+        }
+    }, [loaded, error]);
+
+    if (!loaded && !error) {
+        return null;
+    }
+
     return (
         <NativeTabs
             labelStyle={{
