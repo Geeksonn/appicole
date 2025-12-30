@@ -2,6 +2,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Icon, Label, NativeTabs, VectorIcon } from 'expo-router/unstable-native-tabs';
 import { DynamicColorIOS } from 'react-native';
 
+import '@/global.css';
+
 export default function RootLayout() {
     return (
         <NativeTabs
