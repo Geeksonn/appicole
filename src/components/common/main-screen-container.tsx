@@ -9,7 +9,7 @@ type Props = {
 const MainScreenContainer: React.FC<Props> = ({ title, children }) => {
     return (
         <SafeAreaProvider>
-            <SafeAreaView className='bg-background'>
+            <SafeAreaView>
                 <Header title={title} />
                 {children}
             </SafeAreaView>
