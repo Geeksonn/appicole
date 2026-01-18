@@ -1,9 +1,10 @@
+import { Event } from '@/lib/types';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
 import { Text, View } from 'react-native';
 
 type Props = {
-    eventData: any;
+    eventData: Event;
 };
 
 const EventItem: React.FC<Props> = ({ eventData }) => {
@@ -25,8 +26,8 @@ const EventItem: React.FC<Props> = ({ eventData }) => {
     return (
         <>
             <View className='mb-6 last:mb-0 ml-7 mr-5 pl-10 rounded-xl shadow-lg bg-white p-4'>
-                <View className='flex items-center gap-y-1 absolute -top-1 -left-8 bg-accent-orange/30 w-18 px-3 py-1 rounded-full'>
-                    <Text className='text-base center text-black'>{eventData.time}</Text>
+                <View className='flex items-center gap-y-1 absolute -top-1 -left-8 bg-accent-orange/30 w-18 px-2 py-1 rounded-full'>
+                    <Text className='text-base center text-black'>{eventData.time.substring(0, 5)}</Text>
                 </View>
 
                 <View className='flex flex-row items-center gap-x-2'>
