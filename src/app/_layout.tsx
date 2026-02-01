@@ -7,16 +7,28 @@ import * as SplashScreen from 'expo-splash-screen';
 import { DynamicColorIOS } from 'react-native';
 
 import '@/global.css';
+import { beers$, editions$, events$ } from '@/lib/SupaLegend';
+import { when } from '@legendapp/state';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
     const [loaded, error] = useFonts({
-        'title': require('@assets/fonts/SchibstedGrotesk-Bold.ttf'),
+        title: require('@assets/fonts/SchibstedGrotesk-Bold.ttf'),
         //'title-semibold': require('@assets/fonts/SchibstedGrotesk-SemiBold.ttf'),
     });
 
     React.useEffect(() => {
+        const loadData = async () => {
+            await Promise.all([
+                when(() => events$.get()),
+                when(() => beers$.get()),
+                when(() => editions$.get()),
+            ]);
+        };
+
+        loadData();
+
         if (loaded || error) {
             SplashScreen.hideAsync();
         }
