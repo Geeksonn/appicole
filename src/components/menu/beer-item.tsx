@@ -1,14 +1,17 @@
-import { Beer } from '@/lib/types';
-import { Image } from 'expo-image';
 import React from 'react';
+
+import ItemCard from '@/components/common/item-card';
+import { Beer, UserRating } from '@/lib/types';
+import { Image } from 'expo-image';
 import { Text, View } from 'react-native';
+import BeerRating from './beer-rating';
 
 type Props = {
     beer: Beer;
     rating: number;
     numberOfVotes?: number;
     showCaveIcon?: boolean;
-    //userRatings?: UserRating[];
+    userRatings?: UserRating[];
 };
 
 const BeerItem: React.FunctionComponent<Props> = (props) => {
@@ -20,15 +23,15 @@ const BeerItem: React.FunctionComponent<Props> = (props) => {
     const imgUrl = `${process.env.EXPO_PUBLIC_IMG_CDN}/${image_card_path}`;
 
     return (
-        <View className='flex flex-row justify-around h-36 mx-3 my-6 bg-white rounded-xl ring-2 ring-gray-300/10 shadow-lg'>
+        <ItemCard className='flex flex-row justify-around h-36'>
             <View className='w-1/3 -mt-7'>
                 <Image source={imgUrl} contentFit='contain' transition={1000} style={{ flex: 1 }} />
             </View>
             <View className='flex w-2/3 py-2'>
-                <Text className='font-title font-bold text-brass-green text-xl'>{name}</Text>
-                <Text className='text-gray-400 text-sm'>{`${type} - ${degree_integer},${degree_decimal} %`}</Text>
+                <Text className='font-title font-bold text-accent-green text-xl'>{name}</Text>
+                <Text className='text-grey text-sm'>{`${type} - ${degree_integer},${degree_decimal} %`}</Text>
                 <View className='flex justify-between mr-4 items-center mt-4'>
-                    {/* <BeerRating rating={rating} numberOfVotes={numberOfVotes} /> */}
+                    <BeerRating rating={rating} numberOfVotes={numberOfVotes} />
                     {showCaveIcon && (
                         // <BeerCaveIcon
                         //     id={id}
@@ -39,7 +42,7 @@ const BeerItem: React.FunctionComponent<Props> = (props) => {
                     )}
                 </View>
             </View>
-        </View>
+        </ItemCard>
     );
 
     /* old version --> 

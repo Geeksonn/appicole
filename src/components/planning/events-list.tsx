@@ -1,10 +1,10 @@
-import { events$ as _events$ } from '@/lib/SupaLegend';
+import { events$ } from '@/lib/SupaLegend';
 import { Event } from '@/lib/types';
 import { observer, useValue } from '@legendapp/state/react';
 import { FlatList } from 'react-native';
 import EventItem from './event-item';
 
-const EventsList = observer(({ events$ }: { events$: typeof _events$ }) => {
+const EventsList = observer(() => {
     const eventsBulk = useValue(events$);
     const renderItem = ({ item }: { item: Event }) => <EventItem eventData={item} />;
 

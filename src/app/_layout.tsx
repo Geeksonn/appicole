@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { DynamicColorIOS } from 'react-native';
 
 import '@/global.css';
-import { beers$, editions$, events$ } from '@/lib/SupaLegend';
+import { beers$, editions$, events$, userRatings$ } from '@/lib/SupaLegend';
 import { when } from '@legendapp/state';
 
 SplashScreen.preventAutoHideAsync();
@@ -24,6 +24,7 @@ export default function RootLayout() {
                 when(() => events$.get()),
                 when(() => beers$.get()),
                 when(() => editions$.get()),
+                when(() => userRatings$.get()),
             ]);
         };
 
@@ -40,6 +41,7 @@ export default function RootLayout() {
 
     return (
         <NativeTabs
+            blurEffect='systemDefault'
             labelStyle={{
                 // For the text color
                 color: DynamicColorIOS({

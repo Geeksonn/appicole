@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { Database } from './database.types';
-import { Beer, Edition, Event } from './types';
+import { Beer, Edition, Event, UserRating } from './types';
 
 const supabase = createClient<Database>(
     process.env.EXPO_PUBLIC_SUPABASE_URL!,
@@ -44,4 +44,15 @@ export const getBeers = async (): Promise<Beer[]> => {
     }
 
     return beers;
+};
+
+export const getUserRatings = async (): Promise<UserRating[]> => {
+    const { data: ratings, error } = await supabase.from('app_users_ratings').select('*');
+
+    if (error) {
+        console.error('Error while fetching ratings', error);
+        return [];
+    }
+
+    return ratings;
 };

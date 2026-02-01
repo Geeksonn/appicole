@@ -1,14 +1,16 @@
-import { beers$ as _beers$, editions$ } from '@/lib/SupaLegend';
+import { getRatingAndVotes } from '@/lib/ratings';
+import { beers$, editions$, userRatings$ } from '@/lib/SupaLegend';
 import { Beer } from '@/lib/types';
 import { observer, useValue } from '@legendapp/state/react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import BeerItem from './beer-item';
 
-const BeersList = observer(({ beers$ }: { beers$: typeof _beers$ }) => {
+const BeersList = observer(() => {
     const beersList = useValue(beers$);
     const editions = useValue(editions$);
+    const userRatings = useValue(userRatings$);
 
-    if (!beersList || !editions) return <ActivityIndicator />;
+    if (!beersList || !editions || !userRatings) return <ActivityIndicator />;
 
     const activeEdition = Object.values(editions).find((ed) => ed.active);
 
@@ -21,9 +23,10 @@ const BeersList = observer(({ beers$ }: { beers$: typeof _beers$ }) => {
         );
     }
 
-    const renderItem = ({ item }: { item: Beer }) => (
-        <BeerItem beer={item} rating={-1} showCaveIcon={false} />
-    );
+    const renderItem = ({ item }: { item: Beer }) => {
+        const { rating, nbVotes } = getRatingAndVotes(item.id, Object.values(userRatings));
+        return <BeerItem beer={item} rating={rating} numberOfVotes={nbVotes} showCaveIcon={false} />;
+    };
 
     const beers = Object.values(beersList)
         .filter((b) => b.edition === activeEdition.id)
