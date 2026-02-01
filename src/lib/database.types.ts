@@ -276,24 +276,33 @@ export type Database = {
       editions: {
         Row: {
           active: boolean
+          created_at: string
           date: string
+          deleted: boolean
           id: string
           name: string
           number: number
+          updated_at: string
         }
         Insert: {
           active: boolean
+          created_at?: string
           date: string
+          deleted?: boolean
           id: string
           name: string
           number: number
+          updated_at?: string
         }
         Update: {
           active?: boolean
+          created_at?: string
           date?: string
+          deleted?: boolean
           id?: string
           name?: string
           number?: number
+          updated_at?: string
         }
         Relationships: []
       }
