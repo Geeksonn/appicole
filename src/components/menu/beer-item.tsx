@@ -28,7 +28,7 @@ const BeerItem: React.FunctionComponent<Props> = (props) => {
                 <Image source={imgUrl} contentFit='contain' transition={1000} style={{ flex: 1 }} />
             </View>
             <View className='flex w-2/3 py-2'>
-                <Text className='font-title font-bold text-accent-green text-xl'>{name}</Text>
+                <Text className='font-[title] text-accent-green text-xl'>{name}</Text>
                 <Text className='text-grey text-sm'>{`${type} - ${degree_integer},${degree_decimal} %`}</Text>
                 <View className='flex justify-between mr-4 items-center mt-4'>
                     <BeerRating rating={rating} numberOfVotes={numberOfVotes} />

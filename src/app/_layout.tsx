@@ -14,8 +14,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
     const [loaded, error] = useFonts({
-        title: require('@assets/fonts/SchibstedGrotesk-Bold.ttf'),
-        //'title-semibold': require('@assets/fonts/SchibstedGrotesk-SemiBold.ttf'),
+        title: require('@assets/fonts/Fraunces-Bold.ttf'),
     });
 
     React.useEffect(() => {
