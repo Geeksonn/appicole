@@ -1,9 +1,11 @@
 import { UserRating } from './types';
 
-export const getRatingAndVotes = (
-    bid: string,
-    userRatings: UserRating[],
-): { rating: number; nbVotes: number } => {
+type Result = {
+    rating: number;
+    nbVotes: number;
+};
+
+export const getRatingAndVotes = (bid: string, userRatings: UserRating[]): Result => {
     const ratingsForBeer = userRatings.filter((ur) => ur.beer === bid);
     const nbVotes = ratingsForBeer.length;
     if (nbVotes === 0) {

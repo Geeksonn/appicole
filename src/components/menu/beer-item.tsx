@@ -4,6 +4,7 @@ import ItemCard from '@/components/common/item-card';
 import { Beer, UserRating } from '@/lib/types';
 import { Image } from 'expo-image';
 import { Text, View } from 'react-native';
+import BeerCaveIcon from './beer-cave-icon';
 import BeerRating from './beer-rating';
 
 type Props = {
@@ -30,15 +31,10 @@ const BeerItem: React.FunctionComponent<Props> = (props) => {
             <View className='flex w-2/3 py-2'>
                 <Text className='font-[title] text-accent-green text-xl'>{name}</Text>
                 <Text className='text-grey text-sm'>{`${type} - ${degree_integer},${degree_decimal} %`}</Text>
-                <View className='flex justify-between mr-4 items-center mt-4'>
+                <View className='flex flex-row justify-between mr-4 items-center mt-4'>
                     <BeerRating rating={rating} numberOfVotes={numberOfVotes} />
                     {showCaveIcon && (
-                        // <BeerCaveIcon
-                        //     id={id}
-                        //     userRatings={userRatings}
-                        //     toggleRateBeer={() => setShowModal(true)}
-                        // />
-                        <Text>BeerCaveIcon</Text>
+                        <BeerCaveIcon id={id} rating={-1} toggleRateBeer={() => setShowModal(true)} />
                     )}
                 </View>
             </View>

@@ -22,12 +22,12 @@ const BeerRating: React.FC<Props> = ({ rating, numberOfVotes = -1 }) => {
         }
 
         jsx.push(
-            <Text key={`rating`} className='pl-0.5 text-sm text-brass-green'>
+            <Text key={`rating`} className='pl-0.5 text-sm text-accent-green'>
                 {rating.toFixed(2)}
             </Text>,
         );
         if (numberOfVotes > -1)
-            jsx.push(<Text key={`voters`} className='text-sm text-brass-grey'>{`(${numberOfVotes})`}</Text>);
+            jsx.push(<Text key={`voters`} className='text-sm text-grey'>{`(${numberOfVotes})`}</Text>);
 
         return jsx;
     };

@@ -40,7 +40,7 @@ export default function RootLayout() {
 
     return (
         <NativeTabs
-            blurEffect='systemDefault'
+            //blurEffect='systemDefault'
             labelStyle={{
                 // For the text color
                 color: DynamicColorIOS({
