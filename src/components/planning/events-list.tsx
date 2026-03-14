@@ -12,9 +12,10 @@ const EventsList = observer(() => {
         const events = Object.values(eventsBulk).sort((a, b) => a.order - b.order);
         return (
             <FlatList
-                className='bg-background flex px-4 pt-4 mb-24'
+                className='bg-background flex px-4 pt-4'
                 data={events}
                 renderItem={renderItem}
+                contentContainerStyle={{ paddingBottom: 80 }}
                 keyExtractor={(item) => item.id}
             />
         );

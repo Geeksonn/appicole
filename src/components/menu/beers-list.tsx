@@ -37,7 +37,7 @@ const BeersList = observer(() => {
         .filter((b) => filter === 'all' || b.container === filter)
         .sort((a, b) => a.name.localeCompare(b.name));
     return (
-        <View className='flex items-center mb-72 bg-background'>
+        <View className='flex items-center bg-background'>
             <View className='flex flex-row justify-around gap-x-4 py-3'>
                 <Filter label='Toutes' selected={filter === 'all'} action={() => setFilter('all')} />
                 <Filter label='Au fût' selected={filter === 'Fût'} action={() => setFilter('Fût')} />
@@ -51,6 +51,7 @@ const BeersList = observer(() => {
                 className='bg-background flex px-4'
                 data={beers}
                 renderItem={renderItem}
+                contentContainerStyle={{ paddingBottom: 280 }}
                 keyExtractor={(item) => item.id}
             />
         </View>

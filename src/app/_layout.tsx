@@ -72,12 +72,10 @@ export default function RootLayout() {
                 <Icon src={<VectorIcon family={Ionicons} name='time-outline' />} />
             </NativeTabs.Trigger>
 
-            {/*}
             <NativeTabs.Trigger name='guide'>
                 <Label>Guide</Label>
-                <Icon sf='questionmark.message' drawable='custom_settings_drawable' />
+                <Icon src={<VectorIcon family={Ionicons} name='trail-sign-outline' />} />
             </NativeTabs.Trigger>
-            */}
 
             <NativeTabs.Trigger name='profile'>
                 <Label>Profile</Label>
