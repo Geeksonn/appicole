@@ -31,6 +31,7 @@ export default observer(function ProfileScreen() {
                     placeholder='Password'
                     textContentType='password'
                     onChangeText={setPassword}
+                    secureTextEntry={true}
                     value={password}
                 />
                 <Button onPress={handleLogin} title='Se connecter' />
