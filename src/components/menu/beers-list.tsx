@@ -1,5 +1,5 @@
 import { getRatingAndVotes } from '@/lib/ratings';
-import { beers$, editions$, userRatings$ } from '@/lib/SupaLegend';
+import { beers$, currentUser$, editions$, userRatings$ } from '@/lib/SupaLegend';
 import { Beer } from '@/lib/types';
 import { observer, useValue } from '@legendapp/state/react';
 import React from 'react';
@@ -13,6 +13,7 @@ const BeersList = observer(() => {
     const beersList = useValue(beers$);
     const editions = useValue(editions$);
     const userRatings = useValue(userRatings$);
+    const currentUser = useValue(currentUser$);
 
     if (!beersList || !editions || !userRatings) return <ActivityIndicator />;
 

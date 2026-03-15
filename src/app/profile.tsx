@@ -1,24 +1,49 @@
-import { Image } from 'expo-image';
-import { View } from 'react-native';
+import { useAuth } from '@/components/common/auth-provider';
+import MainScreenContainer from '@/components/common/main-screen-container';
+import { supabase } from '@/lib/queries';
+import { currentUser$ } from '@/lib/SupaLegend';
+import { observer } from '@legendapp/state/react';
+import React from 'react';
+import { Button, Text, TextInput } from 'react-native';
 
-export default function Profile() {
-    const blurhash =
-        '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+export default observer(function ProfileScreen() {
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
+
+    const { session } = useAuth();
+
+    const handleLogin = async () => {
+        // onAuthStateChange s'occupe du reste automatiquement
+        await supabase.auth.signInWithPassword({ email: email, password: password });
+    };
+
+    if (!session) {
+        return (
+            <MainScreenContainer title='Connexion'>
+                <Text>Connecte-toi pour accéder à ton profil</Text>
+                <TextInput
+                    placeholder='Email'
+                    textContentType='emailAddress'
+                    onChangeText={setEmail}
+                    value={email}
+                />
+                <TextInput
+                    placeholder='Password'
+                    textContentType='password'
+                    onChangeText={setPassword}
+                    value={password}
+                />
+                <Button onPress={handleLogin} title='Se connecter' />
+            </MainScreenContainer>
+        );
+    }
+
+    const profile = currentUser$.profile.get();
 
     return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-            <Image
-                source='https://picsum.photos/seed/696/3000/2000'
-                placeholder={{ blurhash }}
-                contentFit='cover'
-                transition={1000}
-                style={{ flex: 1, width: '100%' }}
-            />
-        </View>
+        <MainScreenContainer title='Mon Profil'>
+            <Text>E-mail: {profile?.email}</Text>
+            <Button onPress={() => supabase.auth.signOut()} title='Déconnexion' />
+        </MainScreenContainer>
     );
-}
+});

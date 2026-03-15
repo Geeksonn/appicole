@@ -1,10 +1,19 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 import { Database } from './database.types';
 import { Beer, Edition, Event, UserRating } from './types';
 
-const supabase = createClient<Database>(
+export const supabase = createClient<Database>(
     process.env.EXPO_PUBLIC_SUPABASE_URL!,
     process.env.EXPO_PUBLIC_SUPABASE_KEY!,
+    {
+        auth: {
+            storage: AsyncStorage,
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: false,
+        },
+    },
 );
 
 export const getEditions = async (): Promise<Edition[]> => {
@@ -55,4 +64,52 @@ export const getUserRatings = async (): Promise<UserRating[]> => {
     }
 
     return ratings;
+};
+
+export const getUserData = async () => {
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return null;
+
+    const { data: userData, error } = await await supabase
+        .from('app_users')
+        .select('id, email, unseenBadge')
+        .eq('email', user.email!)
+        .single();
+
+    if (error) {
+        console.error('Error while loading user data', error);
+        return null;
+    }
+
+    const [userBadgeRes, badgesRes, ratingsRes] = await Promise.all([
+        await supabase.from('app_users_badges').select('*').eq('user', userData.id),
+        await supabase.from('badges').select('*'),
+        await supabase.from('app_users_ratings').select('*').eq('user', userData.id),
+    ]);
+
+    if (userBadgeRes.error) {
+        console.error('Error while loading user badges', userBadgeRes.error);
+        return null;
+    }
+
+    if (badgesRes.error) {
+        console.error('Error while loading badges', badgesRes.error);
+        return null;
+    }
+
+    if (ratingsRes.error) {
+        console.error('Error while loading badges', ratingsRes.error);
+        return null;
+    }
+
+    const userBadgesIds = userBadgeRes.data.map((ub) => ub.badge);
+    const filteredBadges = badgesRes.data.filter((b) => userBadgesIds.includes(b.id));
+
+    return {
+        ...userData,
+        badges: filteredBadges,
+        ratings: ratingsRes.data,
+    };
 };

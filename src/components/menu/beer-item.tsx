@@ -11,6 +11,7 @@ type Props = {
     beer: Beer;
     rating: number;
     numberOfVotes?: number;
+    // TODO Useful ?
     showCaveIcon?: boolean;
     userRatings?: UserRating[];
 };

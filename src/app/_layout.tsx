@@ -6,6 +6,7 @@ import { Icon, Label, NativeTabs, VectorIcon } from 'expo-router/unstable-native
 import * as SplashScreen from 'expo-splash-screen';
 import { DynamicColorIOS } from 'react-native';
 
+import { AuthProvider } from '@/components/common/auth-provider';
 import '@/global.css';
 import { beers$, editions$, events$, userRatings$ } from '@/lib/SupaLegend';
 import { when } from '@legendapp/state';
@@ -39,49 +40,51 @@ export default function RootLayout() {
     }
 
     return (
-        <NativeTabs
-            //blurEffect='systemDefault'
-            labelStyle={{
-                // For the text color
-                color: DynamicColorIOS({
-                    dark: 'white',
-                    light: 'black',
-                }),
-                selected: { color: '#E65E44' },
-            }}
-            // For the selected icon color
-            tintColor={DynamicColorIOS({
-                dark: '#E65E44',
-                light: '#E65E44',
-            })}>
-            <NativeTabs.Trigger name='index'>
-                <Label>Accueil</Label>
-                {/*<Icon sf='house' drawable='custom_android_drawable' />*/}
-                <Icon src={<VectorIcon family={Ionicons} name='home-outline' />} />
-            </NativeTabs.Trigger>
+        <AuthProvider>
+            <NativeTabs
+                //blurEffect='systemDefault'
+                labelStyle={{
+                    // For the text color
+                    color: DynamicColorIOS({
+                        dark: 'white',
+                        light: 'black',
+                    }),
+                    selected: { color: '#E65E44' },
+                }}
+                // For the selected icon color
+                tintColor={DynamicColorIOS({
+                    dark: '#E65E44',
+                    light: '#E65E44',
+                })}>
+                <NativeTabs.Trigger name='index'>
+                    <Label>Accueil</Label>
+                    {/*<Icon sf='house' drawable='custom_android_drawable' />*/}
+                    <Icon src={<VectorIcon family={Ionicons} name='home-outline' />} />
+                </NativeTabs.Trigger>
 
-            <NativeTabs.Trigger name='menu'>
-                <Label>La Carte</Label>
-                {/*<Icon sf='menucard' drawable='custom_settings_drawable' />*/}
-                <Icon src={<VectorIcon family={Ionicons} name='beer-outline' />} />
-            </NativeTabs.Trigger>
+                <NativeTabs.Trigger name='menu'>
+                    <Label>La Carte</Label>
+                    {/*<Icon sf='menucard' drawable='custom_settings_drawable' />*/}
+                    <Icon src={<VectorIcon family={Ionicons} name='beer-outline' />} />
+                </NativeTabs.Trigger>
 
-            <NativeTabs.Trigger name='planning'>
-                <Label>Planning</Label>
-                {/*<Icon sf='clock' drawable='custom_settings_drawable' />*/}
-                <Icon src={<VectorIcon family={Ionicons} name='time-outline' />} />
-            </NativeTabs.Trigger>
+                <NativeTabs.Trigger name='planning'>
+                    <Label>Planning</Label>
+                    {/*<Icon sf='clock' drawable='custom_settings_drawable' />*/}
+                    <Icon src={<VectorIcon family={Ionicons} name='time-outline' />} />
+                </NativeTabs.Trigger>
 
-            <NativeTabs.Trigger name='guide'>
-                <Label>Guide</Label>
-                <Icon src={<VectorIcon family={Ionicons} name='trail-sign-outline' />} />
-            </NativeTabs.Trigger>
+                <NativeTabs.Trigger name='guide'>
+                    <Label>Guide</Label>
+                    <Icon src={<VectorIcon family={Ionicons} name='trail-sign-outline' />} />
+                </NativeTabs.Trigger>
 
-            <NativeTabs.Trigger name='profile'>
-                <Label>Profile</Label>
-                {/*<Icon sf='person' drawable='custom_settings_drawable' />*/}
-                <Icon src={<VectorIcon family={Ionicons} name='person-circle-outline' />} />
-            </NativeTabs.Trigger>
-        </NativeTabs>
+                <NativeTabs.Trigger name='profile'>
+                    <Label>Profil</Label>
+                    {/*<Icon sf='person' drawable='custom_settings_drawable' />*/}
+                    <Icon src={<VectorIcon family={Ionicons} name='person-circle-outline' />} />
+                </NativeTabs.Trigger>
+            </NativeTabs>
+        </AuthProvider>
     );
 }
