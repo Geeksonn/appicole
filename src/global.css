@@ -37,3 +37,7 @@
     --color-inactive: '#E3E3E3';
     --color-facebook: '#0866ff';
 }
+
+.title-h3 {
+    @apply font-semibold text-xl text-accent-pink;
+}

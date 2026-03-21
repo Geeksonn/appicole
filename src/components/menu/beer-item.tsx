@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ItemCard from '@/components/common/item-card';
-import { Beer, UserRating } from '@/lib/types';
+import { Beer } from '@/lib/types';
 import { Image } from 'expo-image';
 import { Text, View } from 'react-native';
 import BeerCaveIcon from './beer-cave-icon';
@@ -11,13 +11,13 @@ type Props = {
     beer: Beer;
     rating: number;
     numberOfVotes?: number;
-    // TODO Useful ?
+    // TODO Check if necessary
     showCaveIcon?: boolean;
-    userRatings?: UserRating[];
+    userRating?: number;
 };
 
 const BeerItem: React.FunctionComponent<Props> = (props) => {
-    const { beer, rating, numberOfVotes = -1, showCaveIcon = true /*, userRatings = []*/ } = props;
+    const { beer, rating, numberOfVotes = -1, showCaveIcon = true, userRating = -1 } = props;
 
     const [showModal, setShowModal] = React.useState<boolean>(false);
 
@@ -35,7 +35,7 @@ const BeerItem: React.FunctionComponent<Props> = (props) => {
                 <View className='flex flex-row justify-between mr-4 items-center mt-4'>
                     <BeerRating rating={rating} numberOfVotes={numberOfVotes} />
                     {showCaveIcon && (
-                        <BeerCaveIcon id={id} rating={-1} toggleRateBeer={() => setShowModal(true)} />
+                        <BeerCaveIcon id={id} rating={userRating} toggleRateBeer={() => setShowModal(true)} />
                     )}
                 </View>
             </View>

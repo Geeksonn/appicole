@@ -30,7 +30,15 @@ const BeersList = observer(() => {
 
     const renderItem = ({ item }: { item: Beer }) => {
         const { rating, nbVotes } = getRatingAndVotes(item.id, Object.values(userRatings));
-        return <BeerItem beer={item} rating={rating} numberOfVotes={nbVotes} showCaveIcon={true} />;
+        return (
+            <BeerItem
+                beer={item}
+                rating={rating}
+                numberOfVotes={nbVotes}
+                userRating={currentUser.profile?.ratings.find((r) => r.beer === item.id)?.rating || -1}
+                showCaveIcon={true}
+            />
+        );
     };
 
     const beers = Object.values(beersList)
