@@ -13,3 +13,9 @@ export type UserProfile = {
     badges: Badge[];
     ratings: UserRating[];
 };
+
+export type RouteWithBeers = {
+    id: string;
+    name: string;
+    beers: { id: string; order: number }[];
+};

@@ -1,32 +1,39 @@
 import { observable } from '@legendapp/state';
 import { syncedCrud } from '@legendapp/state/sync-plugins/crud';
-import { getBeers, getEditions, getEvents, getUserData, getUserRatings } from './queries';
+import * as queries from './queries';
 import { UserProfile } from './types';
 
 export const editions$ = observable(
     syncedCrud({
-        list: getEditions,
+        list: queries.getEditions,
         mode: 'assign',
     }),
 );
 
 export const events$ = observable(
     syncedCrud({
-        list: getEvents,
+        list: queries.getEvents,
         mode: 'assign',
     }),
 );
 
 export const beers$ = observable(
     syncedCrud({
-        list: getBeers,
+        list: queries.getBeers,
+        mode: 'assign',
+    }),
+);
+
+export const routes$ = observable(
+    syncedCrud({
+        list: queries.getRoutesWithBeers,
         mode: 'assign',
     }),
 );
 
 export const userRatings$ = observable(
     syncedCrud({
-        list: getUserRatings,
+        list: queries.getUserRatings,
         mode: 'assign',
     }),
 );
@@ -39,7 +46,7 @@ export const currentUser$ = observable({
 export const loadUserData = async () => {
     currentUser$.loading.set(true);
 
-    const userData = await getUserData();
+    const userData = await queries.getUserData();
     if (userData) {
         currentUser$.profile.set(userData);
         currentUser$.loading.set(false);

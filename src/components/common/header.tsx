@@ -12,7 +12,7 @@ const Header: React.FC<Props> = ({ title }) => {
             <View>
                 <Logo width={58} height={66} />
             </View>
-            <Text className='text-3xl font-[title] text-accent-green'>{title}</Text>
+            <Text className='title-h1'>{title}</Text>
         </View>
     );
     /*

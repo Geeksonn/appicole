@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 import { Database } from './database.types';
-import { Beer, Edition, Event, UserRating } from './types';
+import { Beer, Edition, Event, RouteWithBeers, UserRating } from './types';
 
 export const supabase = createClient<Database>(
     process.env.EXPO_PUBLIC_SUPABASE_URL!,
@@ -55,6 +55,44 @@ export const getBeers = async (): Promise<Beer[]> => {
     return beers;
 };
 
+export const getRoutesWithBeers = async (): Promise<RouteWithBeers[]> => {
+    const { data: routes, error } = await supabase
+        .from('routes')
+        .select('*, editions!inner()')
+        .eq('editions.active', true);
+
+    if (error) {
+        console.error('Error while fetching routes', error);
+        return [];
+    }
+
+    const { data: routeBeers, error: errRouteBeers } = await supabase
+        .from('route_beers')
+        .select('*')
+        .in(
+            'route',
+            routes.map((r) => r.id),
+        );
+
+    if (errRouteBeers) {
+        console.error('Error while fetching route beers', errRouteBeers);
+        return [];
+    }
+
+    return routes.map((route) => ({
+        id: route.id,
+        name: route.name,
+        beers: routeBeers
+            .filter((rb) => rb.route === route.id)
+            .map((rb) => {
+                return {
+                    id: rb.beer,
+                    order: rb.order,
+                };
+            }),
+    }));
+};
+
 export const getUserRatings = async (): Promise<UserRating[]> => {
     const { data: ratings, error } = await supabase.from('app_users_ratings').select('*');
 
@@ -72,7 +110,7 @@ export const getUserData = async () => {
     } = await supabase.auth.getUser();
     if (!user) return null;
 
-    const { data: userData, error } = await await supabase
+    const { data: userData, error } = await supabase
         .from('app_users')
         .select('id, email, unseenBadge')
         .eq('email', user.email!)

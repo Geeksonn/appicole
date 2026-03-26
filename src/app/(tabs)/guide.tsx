@@ -1,8 +1,11 @@
 import LargeButton from '@/components/common/large-button';
 import MainScreenContainer from '@/components/common/main-screen-container';
+import { useRouter } from 'expo-router';
 import { Text, View } from 'react-native';
 
 export default function Guide() {
+    const router = useRouter();
+
     return (
         <MainScreenContainer title={`On vous guide`}>
             <View className='p-4'>
@@ -22,7 +25,7 @@ export default function Guide() {
                 <Text className='mt-3 text-gray-500'>
                     {`Nos routes cosistent en une sélection de bières ordonnées pour une dégustation optimale.`}
                 </Text>
-                <LargeButton title='Découvrir les routes' onPress={() => console.log('Discover routes')} />
+                <LargeButton title='Découvrir les routes' onPress={() => router.navigate('/routes')} />
             </View>
 
             <View className='p-4'>
@@ -30,7 +33,7 @@ export default function Guide() {
                 <Text className='mt-3 text-gray-500'>
                     {`Nous avons préparé une série de questions afin de déterminer LA bière qui vous correspond.`}
                 </Text>
-                <LargeButton title='Utiliser notre guide' onPress={() => console.log('Guided questions')} />
+                <LargeButton title='Utiliser notre guide' onPress={() => router.navigate('/questions')} />
             </View>
         </MainScreenContainer>
     );

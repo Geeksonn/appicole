@@ -38,6 +38,10 @@
     --color-facebook: '#0866ff';
 }
 
+.title-h1 {
+    @apply font-[title] text-3xl text-accent-green;
+}
+
 .title-h3 {
     @apply font-semibold text-xl text-accent-pink;
 }
