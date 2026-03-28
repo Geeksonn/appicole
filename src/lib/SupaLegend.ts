@@ -31,6 +31,13 @@ export const routes$ = observable(
     }),
 );
 
+export const questionsAndOptions$ = observable(
+    syncedCrud({
+        list: queries.getQuestionsAndOptions,
+        mode: 'assign',
+    }),
+);
+
 export const userRatings$ = observable(
     syncedCrud({
         list: queries.getUserRatings,

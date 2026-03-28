@@ -1,7 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 import { Database } from './database.types';
-import { Beer, Edition, Event, RouteWithBeers, UserRating } from './types';
+import {
+    Beer,
+    Edition,
+    Event,
+    OptionsForQuestion,
+    QuestionsAndOptions,
+    RouteWithBeers,
+    UserRating,
+} from './types';
 
 export const supabase = createClient<Database>(
     process.env.EXPO_PUBLIC_SUPABASE_URL!,
@@ -53,6 +61,53 @@ export const getBeers = async (): Promise<Beer[]> => {
     }
 
     return beers;
+};
+
+export const getQuestionsAndOptions = async (): Promise<QuestionsAndOptions[]> => {
+    const { data: questions, error: errQ } = await supabase
+        .from('questions')
+        .select('*, editions!inner()')
+        .eq('editions.active', true);
+
+    if (errQ) {
+        console.error('Error while fetching questions', errQ);
+        return [];
+    }
+
+    const { data: options, error: errO } = await supabase
+        .from('options')
+        .select('*')
+        .in(
+            'question',
+            questions.map((q) => q.id),
+        );
+
+    if (errO) {
+        console.error('Error while fetching options', errO);
+        return [];
+    }
+
+    return questions
+        .map((q) => {
+            const optionsForQ: OptionsForQuestion[] = options
+                .filter((o) => o.question === q.id)
+                .map((o) => {
+                    return {
+                        id: o.id,
+                        option: o.option,
+                        selectedBeerId: o.selected_beer_id,
+                        nextQuestionId: o.next_question,
+                    };
+                });
+
+            return {
+                id: q.id,
+                qid: q.qid,
+                question: q.question,
+                options: optionsForQ,
+            };
+        })
+        .sort((a, b) => a.qid - b.qid);
 };
 
 export const getRoutesWithBeers = async (): Promise<RouteWithBeers[]> => {

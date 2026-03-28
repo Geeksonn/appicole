@@ -19,3 +19,17 @@ export type RouteWithBeers = {
     name: string;
     beers: { id: string; order: number }[];
 };
+
+export type OptionsForQuestion = {
+    id: string;
+    option: string;
+    selectedBeerId: string | null;
+    nextQuestionId: number;
+};
+
+export type QuestionsAndOptions = {
+    id: string;
+    qid: number;
+    question: string;
+    options: OptionsForQuestion[];
+};
