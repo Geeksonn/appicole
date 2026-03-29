@@ -3,6 +3,7 @@ import React from 'react';
 import ItemCard from '@/components/common/item-card';
 import { Beer } from '@/lib/types';
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 import { Text, View } from 'react-native';
 import BeerCaveIcon from './beer-cave-icon';
 import BeerRating from './beer-rating';
@@ -18,6 +19,7 @@ type Props = {
 
 const BeerItem: React.FunctionComponent<Props> = (props) => {
     const { beer, rating, numberOfVotes = -1, showCaveIcon = true, userRating = -1 } = props;
+    const router = useRouter();
 
     const [showModal, setShowModal] = React.useState<boolean>(false);
 
@@ -25,7 +27,9 @@ const BeerItem: React.FunctionComponent<Props> = (props) => {
     const imgUrl = `${process.env.EXPO_PUBLIC_IMG_CDN}/${image_card_path}`;
 
     return (
-        <ItemCard className='flex flex-row justify-around h-36'>
+        <ItemCard
+            className='flex flex-row justify-around h-36'
+            onPress={() => router.push({ pathname: '/[beerId]', params: { beerId: beer.id } })}>
             <View className='w-1/3 -mt-7'>
                 <Image source={imgUrl} contentFit='contain' transition={1000} style={{ flex: 1 }} />
             </View>

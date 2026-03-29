@@ -5,7 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import { AuthProvider } from '@/components/common/auth-provider';
 import '@/global.css';
-import { beers$, editions$, events$, userRatings$ } from '@/lib/SupaLegend';
+import { beers$, editions$, events$, questionsAndOptions$, routes$, userRatings$ } from '@/lib/SupaLegend';
 import { when } from '@legendapp/state';
 import { Stack } from 'expo-router';
 
@@ -23,6 +23,8 @@ export default function RootLayout() {
                 when(() => beers$.get()),
                 when(() => editions$.get()),
                 when(() => userRatings$.get()),
+                when(() => routes$.get()),
+                when(() => questionsAndOptions$.get()),
             ]);
         };
 
@@ -43,6 +45,7 @@ export default function RootLayout() {
                 <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
                 <Stack.Screen name='routes' options={{ headerShown: false }} />
                 <Stack.Screen name='questions' options={{ headerShown: false }} />
+                <Stack.Screen name='[beerId]' options={{ headerShown: false }} />
             </Stack>
         </AuthProvider>
     );

@@ -42,6 +42,10 @@
     @apply font-[title] text-3xl text-accent-green;
 }
 
+.title-h2 {
+    @apply font-[title] font-bold text-accent-green text-xl;
+}
+
 .title-h3 {
     @apply font-semibold text-xl text-accent-pink;
 }

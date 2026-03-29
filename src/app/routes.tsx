@@ -3,12 +3,13 @@ import { beers$, routes$ } from '@/lib/SupaLegend';
 import { Beer } from '@/lib/types';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useValue } from '@legendapp/state/react';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
 
 export default function RoutesScreen() {
     const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
-    const [beersInRoute, setBeersInRoute] = React.useState<Beer[]>([]);
+    const router = useRouter();
     const beers = useValue(beers$);
     const routes = useValue(routes$);
 
@@ -33,13 +34,15 @@ export default function RoutesScreen() {
 
     const renderBeerItem = ({ item }: { item: Beer }) => {
         return (
-            <View className='flex gap-y-1 p-4 my-2 bg-white rounded-lg shadow'>
+            <TouchableOpacity
+                className='flex gap-y-1 p-4 my-2 bg-white rounded-lg shadow'
+                onPress={() => router.push({ pathname: '/[beerId]', params: { beerId: item.id } })}>
                 <Text className='text-base font-semibold text-accent-green'>{item.name}</Text>
                 <Text className='pl-3 text-sm text-gray-400'>{item.brewery}</Text>
                 <Text className='pl-3 text-xs text-gray-400'>
                     {item.type} - IBU {item.ibu} - {item.degree_integer},{item.degree_decimal}%
                 </Text>
-            </View>
+            </TouchableOpacity>
         );
     };
 
