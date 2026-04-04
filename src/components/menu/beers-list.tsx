@@ -36,7 +36,6 @@ const BeersList = observer(() => {
                 rating={rating}
                 numberOfVotes={nbVotes}
                 userRating={currentUser.profile?.ratings.find((r) => r.beer === item.id)?.rating || -1}
-                showCaveIcon={true}
             />
         );
     };
@@ -45,6 +44,7 @@ const BeersList = observer(() => {
         .filter((b) => b.edition === activeEdition.id)
         .filter((b) => filter === 'all' || b.container === filter)
         .sort((a, b) => a.name.localeCompare(b.name));
+
     return (
         <View className='flex items-center bg-background'>
             <View className='flex flex-row justify-around gap-x-4 py-3'>

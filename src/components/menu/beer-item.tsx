@@ -5,23 +5,18 @@ import { Beer } from '@/lib/types';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { Text, View } from 'react-native';
-import BeerCaveIcon from './beer-cave-icon';
 import BeerRating from './beer-rating';
 
 type Props = {
     beer: Beer;
     rating: number;
     numberOfVotes?: number;
-    // TODO Check if necessary
-    showCaveIcon?: boolean;
     userRating?: number;
 };
 
 const BeerItem: React.FunctionComponent<Props> = (props) => {
-    const { beer, rating, numberOfVotes = -1, showCaveIcon = true, userRating = -1 } = props;
+    const { beer, rating, numberOfVotes = -1, userRating = -1 } = props;
     const router = useRouter();
-
-    const [showModal, setShowModal] = React.useState<boolean>(false);
 
     const { id, name, image_card_path, type, degree_integer, degree_decimal } = beer;
     const imgUrl = `${process.env.EXPO_PUBLIC_IMG_CDN}/${image_card_path}`;
@@ -38,9 +33,12 @@ const BeerItem: React.FunctionComponent<Props> = (props) => {
                 <Text className='text-grey text-sm'>{`${type} - ${degree_integer},${degree_decimal} %`}</Text>
                 <View className='flex flex-row justify-between mr-4 items-center mt-4'>
                     <BeerRating rating={rating} numberOfVotes={numberOfVotes} />
-                    {showCaveIcon && (
-                        <BeerCaveIcon id={id} rating={userRating} toggleRateBeer={() => setShowModal(true)} />
-                    )}
+                    {/*}
+                    <BeerCaveIcon
+                        id={id}
+                        rating={userRating}
+                        toggleRateBeer={() => showRateBeerModal(beer)}
+                    />*/}
                 </View>
             </View>
         </ItemCard>

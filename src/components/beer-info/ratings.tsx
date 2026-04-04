@@ -1,59 +1,28 @@
-import { Beer } from '@/lib/types';
+import { UserRating } from '@/lib/types';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { NoVoteIcon, VoteEmptyIcon, VoteFilledIcon } from './icons';
+import { View } from 'react-native';
 import RatingElement from './rating-element';
+import UserRatingElement from './user-rating-element';
 
 type Props = {
     avgRating: number;
-    usrRating: number;
-    beer: Beer;
+    justVoted: boolean;
+    beerId: string;
+    userId: string;
+    fullUserRatings: UserRating[];
+    showRateBeer: () => void;
 };
 
-const Ratings: React.FC<Props> = ({ avgRating, usrRating, beer }) => {
-    const buildRating = (id: string, rating: number): React.ReactNode[] => {
-        let jsx: React.ReactNode[] = [];
-
-        if (rating > 0) {
-            let ratingLeft = rating;
-            for (let i = 0; i < 5; i++) {
-                if (ratingLeft >= 0.5) {
-                    jsx.push(<VoteFilledIcon key={`${id}_${i}`} />);
-                } else {
-                    jsx.push(<VoteEmptyIcon key={`${id}_${i}`} />);
-                }
-
-                ratingLeft--;
-            }
-        } else {
-            for (let i = 0; i < 5; i++) {
-                jsx.push(<NoVoteIcon key={`${id}_no_vote_${i}`} />);
-            }
-        }
-
-        return jsx;
-    };
+const Ratings: React.FC<Props> = (props) => {
+    const { avgRating, justVoted, beerId, userId, fullUserRatings, showRateBeer } = props;
+    const usrRating = fullUserRatings.find((r) => r.user === userId && r.beer === beerId)?.rating ?? -1;
 
     return (
         <View className='flex flex-row items-center mt-8 px-4 justify-between'>
-            <RatingElement
-                title='Moyenne générale'
-                rating={avgRating.toFixed(2)}
-                ratingIcons={buildRating('avg', avgRating)}
-            />
-            {usrRating >= 0 ? (
-                <RatingElement
-                    title='Ma note'
-                    rating={usrRating.toFixed(2)}
-                    ratingIcons={buildRating('usr', usrRating)}
-                />
-            ) : (
-                <TouchableOpacity
-                    className='px-3 py-2 bg-accent-orange rounded-lg'
-                    onPress={() => console.log('TODO: rate beer')}>
-                    <Text className='text-sm font-medium text-white text-center'>Noter la bière</Text>
-                </TouchableOpacity>
-            )}
+            <RatingElement title='Moyenne générale' rating={avgRating} />
+            {userId !== '' ? (
+                <UserRatingElement justVoted={justVoted} usrRating={usrRating} showRateBeer={showRateBeer} />
+            ) : null}
         </View>
     );
 };

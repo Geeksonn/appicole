@@ -159,6 +159,17 @@ export const getUserRatings = async (): Promise<UserRating[]> => {
     return ratings;
 };
 
+export const createUserRating = async (uRating: UserRating) => {
+    const { data, error } = await supabase.from('app_users_ratings').insert(uRating).select().single();
+
+    if (error) {
+        console.error('Error while creating user rating', error);
+        return null;
+    }
+
+    return data;
+};
+
 export const getUserData = async () => {
     const {
         data: { user },
