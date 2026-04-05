@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
-import { Database } from './database.types';
+import { Database, TablesInsert } from './database.types';
 import {
     Beer,
     Edition,
@@ -216,4 +216,17 @@ export const getUserData = async () => {
         badges: filteredBadges,
         ratings: ratingsRes.data,
     };
+};
+
+export const createUser = async (email: string) => {
+    const newUser: TablesInsert<'app_users'> = {
+        email,
+        unseenBadge: false,
+    };
+    const { data, error } = await supabase.from('app_users').insert(newUser);
+
+    if (error) {
+        console.error('Error while creating user', error);
+        return null;
+    }
 };
