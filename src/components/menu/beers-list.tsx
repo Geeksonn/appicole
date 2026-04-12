@@ -1,6 +1,4 @@
-import { getRatingAndVotes } from '@/lib/ratings';
-import { beers$, currentUser$, editions$, userRatings$ } from '@/lib/SupaLegend';
-import { Beer } from '@/lib/types';
+import { beers$, editions$ } from '@/lib/SupaLegend';
 import { observer, useValue } from '@legendapp/state/react';
 import React from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
@@ -12,10 +10,8 @@ const BeersList = observer(() => {
 
     const beersList = useValue(beers$);
     const editions = useValue(editions$);
-    const userRatings = useValue(userRatings$);
-    const currentUser = useValue(currentUser$);
 
-    if (!beersList || !editions || !userRatings) return <ActivityIndicator />;
+    if (!beersList || !editions) return <ActivityIndicator />;
 
     const activeEdition = Object.values(editions).find((ed) => ed.active);
 
@@ -27,18 +23,6 @@ const BeersList = observer(() => {
             </View>
         );
     }
-
-    const renderItem = ({ item }: { item: Beer }) => {
-        const { rating, nbVotes } = getRatingAndVotes(item.id, Object.values(userRatings));
-        return (
-            <BeerItem
-                beer={item}
-                rating={rating}
-                numberOfVotes={nbVotes}
-                userRating={currentUser.profile?.ratings.find((r) => r.beer === item.id)?.rating || -1}
-            />
-        );
-    };
 
     const beers = Object.values(beersList)
         .filter((b) => b.edition === activeEdition.id)
@@ -59,7 +43,7 @@ const BeersList = observer(() => {
             <FlatList
                 className='bg-background flex px-4'
                 data={beers}
-                renderItem={renderItem}
+                renderItem={({ item }) => <BeerItem beer={item} />}
                 contentContainerStyle={{ paddingBottom: 280 }}
                 keyExtractor={(item) => item.id}
             />

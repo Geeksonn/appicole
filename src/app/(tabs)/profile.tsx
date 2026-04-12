@@ -5,12 +5,14 @@ import LoginScreen from '@/components/profile/login-screen';
 import { supabase } from '@/lib/queries';
 import { currentUser$ } from '@/lib/SupaLegend';
 import { observer } from '@legendapp/state/react';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 
 export default observer(function ProfileScreen() {
     const [loading, setLoading] = React.useState<boolean>(false);
     const { session } = useAuth();
+    const router = useRouter();
 
     if (!session) {
         return (
@@ -49,7 +51,7 @@ export default observer(function ProfileScreen() {
                 </View>
                 <Pressable
                     className='py-5 px-8 border-b border-b-gray-300'
-                    onPress={() => console.log('TODO: vidanges')}>
+                    onPress={() => router.push('/cave')}>
                     <Text className='font-semibold text-accent-green'>Mes vidanges</Text>
 
                     <Text className='text-gray-400'>Retrouvez ici toutes vos bières bues</Text>

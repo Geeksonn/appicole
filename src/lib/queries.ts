@@ -149,7 +149,10 @@ export const getRoutesWithBeers = async (): Promise<RouteWithBeers[]> => {
 };
 
 export const getUserRatings = async (): Promise<UserRating[]> => {
-    const { data: ratings, error } = await supabase.from('app_users_ratings').select('*');
+    const { data: ratings, error } = await supabase
+        .from('app_users_ratings')
+        .select('*')
+        .order('created_at', { ascending: false });
 
     if (error) {
         console.error('Error while fetching ratings', error);

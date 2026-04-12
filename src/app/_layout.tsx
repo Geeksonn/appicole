@@ -46,6 +46,7 @@ export default function RootLayout() {
                 <Stack.Screen name='routes' options={{ headerShown: false }} />
                 <Stack.Screen name='questions' options={{ headerShown: false }} />
                 <Stack.Screen name='[beerId]' options={{ headerShown: false }} />
+                <Stack.Screen name='cave' options={{ headerShown: false }} />
             </Stack>
         </AuthProvider>
     );

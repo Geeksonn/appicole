@@ -1,7 +1,10 @@
 import React from 'react';
 
 import ItemCard from '@/components/common/item-card';
+import { getRatingAndVotes } from '@/lib/ratings';
+import { currentUser$, userRatings$ } from '@/lib/SupaLegend';
 import { Beer } from '@/lib/types';
+import { useValue } from '@legendapp/state/react';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { Text, View } from 'react-native';
@@ -9,17 +12,22 @@ import BeerRating from './beer-rating';
 
 type Props = {
     beer: Beer;
-    rating: number;
-    numberOfVotes?: number;
-    userRating?: number;
 };
 
-const BeerItem: React.FunctionComponent<Props> = (props) => {
-    const { beer, rating, numberOfVotes = -1, userRating = -1 } = props;
+const BeerItem: React.FunctionComponent<Props> = ({ beer }) => {
+    const userRatings = useValue(userRatings$);
+    const currentUser = useValue(currentUser$);
     const router = useRouter();
 
-    const { id, name, image_card_path, type, degree_integer, degree_decimal } = beer;
+    const { name, image_card_path, type, degree_integer, degree_decimal } = beer;
     const imgUrl = `${process.env.EXPO_PUBLIC_IMG_CDN}/${image_card_path}`;
+
+    if (!userRatings || !currentUser) {
+        console.error('[beer-item] User ratings or current user not loaded');
+        router.push('/');
+    }
+
+    const { rating, nbVotes } = getRatingAndVotes(beer.id, Object.values(userRatings));
 
     return (
         <ItemCard
@@ -32,55 +40,11 @@ const BeerItem: React.FunctionComponent<Props> = (props) => {
                 <Text className='font-[title] text-accent-green text-xl'>{name}</Text>
                 <Text className='text-grey text-sm'>{`${type} - ${degree_integer},${degree_decimal} %`}</Text>
                 <View className='flex flex-row justify-between mr-4 items-center mt-4'>
-                    <BeerRating rating={rating} numberOfVotes={numberOfVotes} />
-                    {/*}
-                    <BeerCaveIcon
-                        id={id}
-                        rating={userRating}
-                        toggleRateBeer={() => showRateBeerModal(beer)}
-                    />*/}
+                    <BeerRating rating={rating} numberOfVotes={nbVotes} />
                 </View>
             </View>
         </ItemCard>
     );
-
-    /* old version --> 
-    return (
-        <>
-            <Link href={`/edition/beer/${id}`} className='last:mb-24'>
-                <div className='flex justify-around h-36 mx-3 my-8 bg-white rounded-xl drop-shadow-[0_0_30px_rgba(0,0,0,0.05)]'>
-                    <div className='w-1/3 -mt-4'>
-                        <img src={imgUrl} className={`h-40 -mt-8 mx-auto`} />
-                    </div>
-                    <div className='flex flex-col w-2/3 py-2'>
-                        <div className='flex justify-between items-center pr-2'>
-                            <h2>{name}</h2>
-                        </div>
-                        <p className='text-brass-grey text-sm'>{`${type} - ${degree_integer},${degree_decimal} %`}</p>
-                        {rating === -1 ? (
-                            <Spinner />
-                        ) : (
-                            <div className='flex justify-between mr-4 items-center mt-4'>
-                                <BeerRating rating={rating} numberOfVotes={numberOfVotes} />
-                                {showCaveIcon && (
-                                    <BeerCaveIcon
-                                        id={id}
-                                        userRatings={userRatings}
-                                        toggleRateBeer={() => setShowModal(true)}
-                                    />
-                                )}
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </Link>
-
-            <Modal show={showModal} close={() => setShowModal(false)}>
-                <BeerRatingForm beer={beer} close={() => setShowModal(false)} />
-            </Modal>
-        </>
-    );
-    */
 };
 
 export default BeerItem;
