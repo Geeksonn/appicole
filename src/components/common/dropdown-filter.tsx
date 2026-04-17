@@ -1,6 +1,6 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { BlurView } from 'expo-blur';
 import React from 'react';
-import { Animated, Modal, Platform, Pressable, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Modal, Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 type Props = {
     items: {
@@ -12,109 +12,132 @@ type Props = {
 };
 
 type Position = {
-    top: number;
-    left: number;
+    x: number;
+    y: number;
     width: number;
+    height: number;
 };
 
 const DropdownFilter: React.FC<Props> = ({ items, selected, onSelect }) => {
     const [showDropdown, setShowDropdown] = React.useState<boolean>(false);
-    const fadeAnim = React.useRef(new Animated.Value(0)).current;
-    const slideAnim = React.useRef(new Animated.Value(-8)).current;
+    // Animated values
+    const heightAnim = React.useRef(new Animated.Value(36)).current;
+    const listOpacity = React.useRef(new Animated.Value(0)).current;
+    const backdropOpacity = React.useRef(new Animated.Value(0)).current;
+    const buttonOpacity = React.useRef(new Animated.Value(1)).current;
+
     const buttonRef = React.useRef<View>(null);
-    const [dropdownPos, setDropdownPos] = React.useState<Position>({ top: 0, left: 0, width: 0 });
+    const [buttonLayout, setButtonLayout] = React.useState<Position>({ x: 0, y: 0, width: 160, height: 36 });
+
+    const BUTTON_HEIGHT = 48;
+    const OPTION_ROW_HEIGHT = 44;
+    const menuHeight = BUTTON_HEIGHT + items.length * OPTION_ROW_HEIGHT;
 
     const openDropdown = () => {
         buttonRef.current?.measureInWindow((x, y, width, height) => {
-            setDropdownPos({ top: y + height + 6, left: x, width });
+            setButtonLayout({ x, y, width, height });
+            buttonOpacity.setValue(0);
             setShowDropdown(true);
-            fadeAnim.setValue(0);
-            slideAnim.setValue(-8);
+
             Animated.parallel([
-                Animated.timing(fadeAnim, {
+                Animated.spring(heightAnim, {
+                    toValue: menuHeight,
+                    damping: 22,
+                    stiffness: 280,
+                    useNativeDriver: false,
+                }),
+                Animated.timing(listOpacity, {
                     toValue: 1,
-                    duration: 180,
+                    duration: 160,
+                    delay: 80,
                     useNativeDriver: true,
                 }),
-                Animated.timing(slideAnim, {
-                    toValue: 0,
-                    duration: 180,
+                Animated.timing(backdropOpacity, {
+                    toValue: 1,
+                    duration: 200,
                     useNativeDriver: true,
                 }),
             ]).start();
         });
     };
 
-    const closeDropdown = () => {
+    const closeDropdown = (callback?: () => void) => {
         Animated.parallel([
-            Animated.timing(fadeAnim, {
+            /*Animated.spring(heightAnim, {
+                toValue: BUTTON_HEIGHT,
+                damping: 22,
+                stiffness: 280,
+                useNativeDriver: false,
+            }),*/
+            Animated.timing(listOpacity, {
                 toValue: 0,
-                duration: 140,
+                duration: 1,
                 useNativeDriver: true,
             }),
-            Animated.timing(slideAnim, {
-                toValue: -8,
-                duration: 140,
+            Animated.timing(backdropOpacity, {
+                toValue: 0,
+                duration: 0,
                 useNativeDriver: true,
             }),
-        ]).start(() => setShowDropdown(false));
+        ]).start(() => {
+            setShowDropdown(false);
+            heightAnim.setValue(BUTTON_HEIGHT);
+            Animated.timing(buttonOpacity, {
+                toValue: 1,
+                duration: 1,
+                useNativeDriver: true,
+            }).start(() => callback?.());
+        });
     };
 
     const handleSelect = (value: string) => {
-        onSelect(value);
-        closeDropdown();
+        closeDropdown(() => onSelect(value));
     };
 
     return (
         <View className='px-4 my-5'>
-            <TouchableOpacity
-                ref={buttonRef as any}
-                onPress={showDropdown ? closeDropdown : openDropdown}
-                activeOpacity={0.75}
-                className='flex flex-row items-center gap-6 px-4 py-3 rounded-full bg-accent-green border border-accent-green'>
-                <Text className='text-xs text-white'>{items.find((it) => it.value === selected)!.label}</Text>
-            </TouchableOpacity>
+            <View className='flex flex-row justify-end w-full'>
+                <TouchableOpacity
+                    ref={buttonRef as any}
+                    onPress={openDropdown}
+                    activeOpacity={0.85}
+                    // We hide this button while the modal is open to avoid double render
+                    style={{ opacity: showDropdown ? 0 : 1 }}
+                    className='flex-row justify-center items-center px-6 h-12 min-w-44 rounded-3xl bg-accent-green/70 border border-accent-green'>
+                    <Text className='text-xs text-white'>
+                        {items.find((it) => it.value === selected)!.label}
+                    </Text>
+                </TouchableOpacity>
+            </View>
 
             {/* Dropdown overlay */}
-            <Modal visible={showDropdown} transparent animationType='none'>
-                <Pressable className='absolute inset-0' onPress={closeDropdown} />
+            <Modal visible={showDropdown} transparent animationType='none' statusBarTranslucent>
+                {/* Dimmed backdrop */}
+                <Animated.View className='absolute inset-0 bg-black/10' style={{ opacity: backdropOpacity }}>
+                    <Pressable className='flex-1' onPress={() => closeDropdown()} />
+                </Animated.View>
                 <Animated.View
-                    className={`absolute bg-white rounded-xl border border-accent-green overflow-hidden`}
-                    style={[
-                        {
-                            top: dropdownPos.top,
-                            left: dropdownPos.left,
-                            minWidth: dropdownPos.width,
-                            opacity: fadeAnim,
-                            transform: [{ translateY: slideAnim }],
-                        },
-                        Platform.OS === 'ios'
-                            ? {
-                                  shadowColor: '#000',
-                                  shadowOffset: { width: 0, height: 8 },
-                                  shadowOpacity: 0.12,
-                                  shadowRadius: 16,
-                              }
-                            : { elevation: 8 },
-                    ]}>
+                    className='absolute overflow-hidden rounded-3xl bg-accent-green/70 border border-accent-green'
+                    style={{
+                        top: buttonLayout.y,
+                        left: buttonLayout.x,
+                        width: buttonLayout.width,
+                        height: heightAnim,
+                    }}>
                     {items.map((it, id) => {
                         const isSelected = it.value === selected;
-                        const isLast = id === items.length - 1;
                         return (
                             <TouchableOpacity
                                 key={`${it.value}_${id}`}
                                 onPress={() => handleSelect(it.value)}
                                 activeOpacity={0.7}
-                                className={`flex flex-row items-center px-4 py-3 gap-x-2`}>
-                                <Text
-                                    className={`text-xs text-accent-green ${isSelected ? 'font-bold' : ''}`}>
-                                    {it.label}
-                                </Text>
-                                {isSelected ? <Ionicons name='checkmark' size={14} /> : null}
+                                className={`flex flex-row items-center px-6 h-12`}>
+                                <Text className={`text-xs text-white`}>{it.label}</Text>
                             </TouchableOpacity>
                         );
                     })}
                 </Animated.View>
+                <BlurView />
             </Modal>
         </View>
     );

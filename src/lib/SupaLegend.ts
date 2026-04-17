@@ -39,6 +39,13 @@ export const questionsAndOptions$ = observable(
     }),
 );
 
+export const badges$ = observable(
+    syncedCrud({
+        list: queries.getBadges,
+        mode: 'assign',
+    }),
+);
+
 export const userRatings$ = observable(
     syncedCrud({
         list: queries.getUserRatings,

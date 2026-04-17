@@ -5,12 +5,13 @@ export type Beer = Tables<'beers'>;
 export type Edition = Tables<'editions'>;
 export type UserRating = Tables<'app_users_ratings'>;
 export type Badge = Tables<'badges'>;
+export type UserBadge = Tables<'app_users_badges'>;
 
 export type UserProfile = {
     id: string;
     email: string;
     unseenBadge: boolean;
-    badges: Badge[];
+    badges: UserBadge[];
     ratings: UserRating[];
 };
 

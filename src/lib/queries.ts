@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 import { Database, TablesInsert } from './database.types';
 import {
+    Badge,
     Beer,
     Edition,
     Event,
@@ -61,6 +62,17 @@ export const getBeers = async (): Promise<Beer[]> => {
     }
 
     return beers;
+};
+
+export const getBadges = async (): Promise<Badge[]> => {
+    const { data: badges, error } = await supabase.from('badges').select('*');
+
+    if (error) {
+        console.error('Error while fetching badges', error);
+        return [];
+    }
+
+    return badges;
 };
 
 export const getQuestionsAndOptions = async (): Promise<QuestionsAndOptions[]> => {
@@ -190,9 +202,8 @@ export const getUserData = async () => {
         return null;
     }
 
-    const [userBadgeRes, badgesRes, ratingsRes] = await Promise.all([
+    const [userBadgeRes, ratingsRes] = await Promise.all([
         await supabase.from('app_users_badges').select('*').eq('user', userData.id),
-        await supabase.from('badges').select('*'),
         await supabase.from('app_users_ratings').select('*').eq('user', userData.id),
     ]);
 
@@ -201,22 +212,14 @@ export const getUserData = async () => {
         return null;
     }
 
-    if (badgesRes.error) {
-        console.error('Error while loading badges', badgesRes.error);
-        return null;
-    }
-
     if (ratingsRes.error) {
-        console.error('Error while loading badges', ratingsRes.error);
+        console.error('Error while loading ratings', ratingsRes.error);
         return null;
     }
-
-    const userBadgesIds = userBadgeRes.data.map((ub) => ub.badge);
-    const filteredBadges = badgesRes.data.filter((b) => userBadgesIds.includes(b.id));
 
     return {
         ...userData,
-        badges: filteredBadges,
+        badges: userBadgeRes.data,
         ratings: ratingsRes.data,
     };
 };

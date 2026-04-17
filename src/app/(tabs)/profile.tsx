@@ -41,14 +41,7 @@ export default observer(function ProfileScreen() {
     return (
         <MainScreenContainer title='Mon Profil'>
             <View className='w-11/12 mx-auto'>
-                {/*}
-                <ProfileHeader name={profile?.email || ''} />
-                */}
-
-                <View className='flex flex-row justify-between py-5 px-4 border-b border-b-gray-300'>
-                    <Text className='font-semibold text-accent-green'>Mon e-mail</Text>
-                    <Text className='text-gray-400 text-right'>{profile?.email || ''}</Text>
-                </View>
+                <Text className='title-h1 text-center py-6 border-b border-b-gray-300'>{profile?.email}</Text>
                 <Pressable
                     className='py-5 px-8 border-b border-b-gray-300'
                     onPress={() => router.push('/cave')}>
@@ -59,7 +52,7 @@ export default observer(function ProfileScreen() {
 
                 <Pressable
                     className='py-5 px-8 border-b border-b-gray-300'
-                    onPress={() => console.log('TODO: vidanges')}>
+                    onPress={() => router.push('/badges')}>
                     <Text className='font-semibold text-accent-green'>Mes badges</Text>
 
                     <Text className='text-gray-400'>Retrouvez ici tous les badges à collectionner</Text>

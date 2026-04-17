@@ -30,7 +30,7 @@ const BeersList = observer(() => {
         .sort((a, b) => a.name.localeCompare(b.name));
 
     return (
-        <View className='flex items-center bg-background'>
+        <View className='flex items-center'>
             <View className='flex flex-row justify-around gap-x-4 py-3'>
                 <Filter label='Toutes' selected={filter === 'all'} action={() => setFilter('all')} />
                 <Filter label='Au fût' selected={filter === 'Fût'} action={() => setFilter('Fût')} />
@@ -41,7 +41,7 @@ const BeersList = observer(() => {
                 />
             </View>
             <FlatList
-                className='bg-background flex px-4'
+                className='flex px-4'
                 data={beers}
                 renderItem={({ item }) => <BeerItem beer={item} />}
                 contentContainerStyle={{ paddingBottom: 280 }}

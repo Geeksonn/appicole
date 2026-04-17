@@ -7,7 +7,7 @@ import { useValue } from '@legendapp/state/react';
 import React from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 
-export default function QuestionsScreen() {
+export default function CaveScreen() {
     const [selectedEdition, setSelectedEdition] = React.useState<string>('');
     const currentUser = useValue(currentUser$);
     const beers = useValue(beers$);
