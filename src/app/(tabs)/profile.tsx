@@ -61,7 +61,7 @@ export default observer(function ProfileScreen() {
                 <View className='mt-5'>
                     <LargeButton
                         title='Détails & Réglages'
-                        onPress={() => console.log('TODO: navigate to settings')}
+                        onPress={() => router.push('/user-settings')}
                         customBgColor='bg-accent-green'
                     />
                     <LargeButton title='Se déconnecter' onPress={() => handleLogout()} />
