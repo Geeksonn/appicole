@@ -1,6 +1,7 @@
 import Filter from '@/components/common/filter';
 import SubPageContainer from '@/components/common/sub-page-container';
-import { badges$, currentUser$ } from '@/lib/SupaLegend';
+import AddBadge from '@/components/profile/add-badge';
+import { addUserBadge, badges$, currentUser$ } from '@/lib/SupaLegend';
 import { Badge } from '@/lib/types';
 import { useValue } from '@legendapp/state/react';
 import { Image } from 'expo-image';
@@ -18,6 +19,7 @@ export default function BadgesScreen() {
     }
 
     const [showBadge, setShowBadge] = React.useState<(Badge & { awardedText: string }) | null>(null);
+    const [showAddBadge, setShowAddBadge] = React.useState<boolean>(false);
     const [filter, setFilter] = React.useState<BadgeFilter>('ALL');
 
     const renderItem = (item: Badge) => {
@@ -34,8 +36,13 @@ export default function BadgesScreen() {
         );
 
         if (awarded) {
-            const awardedDate = currentUser.profile!.badges.find((b) => b.badge === item.id)!.date_awarded;
-            const awardedText = `Vous avez obtenu ce badge le ${awardedDate}`;
+            const awardedDate = currentUser.profile!.badges.find((b) => b.badge === item.id)!.created_at;
+            const formattedDate = new Date(awardedDate).toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            });
+            const awardedText = `Vous avez obtenu ce badge le ${formattedDate}`;
             const badgeToShow = { ...item, awardedText };
 
             return (
@@ -69,6 +76,19 @@ export default function BadgesScreen() {
         }
     };
 
+    const addBadge = async (code: string) => {
+        const badgeId = Object.values(badges).find((b) => b.code === code)?.id;
+        if (badgeId !== undefined) {
+            const hasBadge = currentUser.profile!.badges.find((b) => b.badge === badgeId) !== undefined;
+
+            if (!hasBadge) {
+                await addUserBadge(badgeId, currentUser.profile!.id);
+            }
+        }
+
+        setShowAddBadge(false);
+    };
+
     return (
         <SubPageContainer title='Mes badges'>
             <View className='flex flex-row justify-around gap-x-4 py-3 mx-8'>
@@ -80,6 +100,9 @@ export default function BadgesScreen() {
                     action={() => setFilter('NOT_AWARDED')}
                 />
             </View>
+            <Pressable className='flex flex-row justify-center' onPress={() => setShowAddBadge(true)}>
+                <Text className='text-accent-green text-sm'>Ajouter un badge</Text>
+            </Pressable>
             <View className='w-11/12 mx-auto mt-3'>
                 <FlatList
                     numColumns={3}
@@ -105,6 +128,15 @@ export default function BadgesScreen() {
                     <Text className='title-h2 text-center'>{showBadge?.title}</Text>
                     <Text className='text-sm text-center'>{showBadge?.description}</Text>
                     <Text className='text-xs text-center text-gray-500'>{showBadge?.awardedText}</Text>
+                </View>
+            </Modal>
+            <Modal visible={showAddBadge} transparent animationType='none' statusBarTranslucent>
+                {/* Dimmed backdrop */}
+                <View className='absolute inset-0 bg-black/30'>
+                    <Pressable className='flex-1' onPress={() => setShowAddBadge(false)} />
+                </View>
+                <View className='w-full p-4 absolute bottom-0 rounded-3xl bg-white'>
+                    <AddBadge action={addBadge} />
                 </View>
             </Modal>
         </SubPageContainer>

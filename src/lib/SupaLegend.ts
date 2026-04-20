@@ -46,6 +46,20 @@ export const badges$ = observable(
     }),
 );
 
+export const addUserBadge = async (badge: string, userId: string) => {
+    const newUserBadge = {
+        id: uuid.v4() as string,
+        badge,
+        user: userId
+    };
+
+    const addedBadge = await queries.addBadgeToUser(newUserBadge);
+
+    if (addedBadge) {
+        currentUser$.profile.badges.push(addedBadge);
+    }
+};
+
 export const userRatings$ = observable(
     syncedCrud({
         list: queries.getUserRatings,
@@ -61,12 +75,14 @@ export const addUserRating = (beerId: string, rating: number, userId: string) =>
         beer: beerId,
         user: userId,
         rating: rating,
+        created_at: new Date().toISOString(),
     });
     currentUser$.profile.ratings.push({
         id,
         beer: beerId,
         rating: rating,
         user: userId,
+        created_at: new Date().toISOString(),
     });
 };
 

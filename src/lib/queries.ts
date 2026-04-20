@@ -9,7 +9,8 @@ import {
     OptionsForQuestion,
     QuestionsAndOptions,
     RouteWithBeers,
-    UserRating,
+    UserBadgeIns,
+    UserRating
 } from './types';
 
 export const supabase = createClient<Database>(
@@ -223,6 +224,17 @@ export const getUserData = async () => {
         ratings: ratingsRes.data,
     };
 };
+
+export const addBadgeToUser = async (badge: UserBadgeIns) => {
+    const { data, error } = await supabase.from('app_users_badges').insert(badge).select().single();
+
+    if (error) {
+        console.error('Error while adding badge to user', error);
+        return null;
+    }
+
+    return data;
+}
 
 export const createUser = async (email: string) => {
     const newUser: TablesInsert<'app_users'> = {

@@ -1,11 +1,13 @@
-import { Tables } from './database.types';
+import { Tables, TablesInsert } from './database.types';
 
 export type Event = Tables<'events'>;
 export type Beer = Tables<'beers'>;
 export type Edition = Tables<'editions'>;
 export type UserRating = Tables<'app_users_ratings'>;
+export type UserRatingIns = TablesInsert<'app_users_ratings'>;
 export type Badge = Tables<'badges'>;
 export type UserBadge = Tables<'app_users_badges'>;
+export type UserBadgeIns = TablesInsert<'app_users_badges'>;
 
 export type UserProfile = {
     id: string;
